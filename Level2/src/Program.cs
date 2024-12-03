@@ -42,13 +42,18 @@ public class Program
             var ascending = false;
             List<int> newList = [];
 
-            newList.Add(last);
+            var diff = Math.Abs(last - lineData[1]);
+            if (diff < 3 && diff != 0) 
+                newList.Add(last);
+            else
+                fails++;
+
             for (int i = 1; i < lineData.Count; i++)
             {
                 var failed = false;
                 var number = lineData[i];
 
-                var diff = Math.Abs(last - number);
+                diff = Math.Abs(last - number);
                 if (diff > 3 || diff == 0) 
                 {
                     fails++;
@@ -87,6 +92,10 @@ public class Program
                     newList.Add(number);
                 }
             }
+
+            Console.WriteLine(fails);
+            Console.WriteLine(string.Join(", ", lineData));
+            Console.WriteLine(string.Join(", ", newList));
 
             if (fails == 0) totalSafe++;
             else if (fails == 1)
