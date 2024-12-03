@@ -37,69 +37,21 @@ public class Program
         int totalSafe = 0;
         foreach (var lineData in data)
         {
-            int last = lineData[0];
-            var fails = 0;
-            var ascending = false;
-            List<int> newList = [];
-
-            var diff = Math.Abs(last - lineData[1]);
-            if (diff < 3 && diff != 0) 
-                newList.Add(last);
-            else
-                fails++;
-
-            for (int i = 1; i < lineData.Count; i++)
+            for (int i = 0; i < lineData.Count; i++)
             {
-                var failed = false;
-                var number = lineData[i];
-
-                diff = Math.Abs(last - number);
-                if (diff > 3 || diff == 0) 
+                var data2 = new List<int>();
+                for (int j = 0; j < lineData.Count; j++)
                 {
-                    fails++;
-                    failed = true;
-                    if ((i + 1) != lineData.Count)
-                    {
-                        i++;
-                        newList.Add(lineData[i]);
-                        last = lineData[i];
-                    }
+                    if (i == j) continue;
+
+                    data2.Add(lineData[j]);
                 }
-
-                if (i == 1)
-                    ascending = last < number;
-                else
+                if (CheckList(data2))
                 {
-                    if ((ascending && last > number) || (!ascending && last < number))
-                    {
-                        if (!failed)
-                        {
-                            fails++;
-                            failed = true;
-                            if ((i + 1) != lineData.Count)
-                            {
-                                i++;
-                                newList.Add(lineData[i]);
-                                last = lineData[i];
-                            }
-                        }
-                    }
-                }
-
-                if (!failed)
-                {
-                    last = number;
-                    newList.Add(number);
+                    totalSafe++;
+                    break;
                 }
             }
-
-            Console.WriteLine(fails);
-            Console.WriteLine(string.Join(", ", lineData));
-            Console.WriteLine(string.Join(", ", newList));
-
-            if (fails == 0) totalSafe++;
-            else if (fails == 1)
-                if (CheckList(newList)) totalSafe++;
         }
 
         return totalSafe;
